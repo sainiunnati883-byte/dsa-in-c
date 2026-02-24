@@ -1,31 +1,75 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+// Structure definition
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to delete first occurrence of key
+struct Node* deleteFirstOccurrence(struct Node* head, int key) {
+    
+    if (head == NULL)
+        return head;
+
+    // Case 1: If head itself holds the key
+    if (head->data == key) {
+        struct Node* temp = head;
+        head = head->next;
+        free(temp);
+        return head;
+    }
+
+    // Case 2: Traverse the list
+    struct Node* current = head;
+    
+    while (current->next != NULL && current->next->data != key) {
+        current = current->next;
+    }
+
+    // If key found
+    if (current->next != NULL) {
+        struct Node* temp = current->next;
+        current->next = temp->next;
+        free(temp);
+    }
+
+    return head;
+}
 
 int main() {
-    int n, pos;
+    int n, key, value;
+    struct Node *head = NULL, *temp = NULL, *newNode = NULL;
 
-    printf("Enter number of elements: ");
     scanf("%d", &n);
 
-    int arr[n];
-    printf("Enter %d elements:\n", n);
+    // Creating linked list
     for (int i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
+        scanf("%d", &value);
+
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;
+            temp = newNode;
+        } else {
+            temp->next = newNode;
+            temp = newNode;
+        }
     }
 
-    printf("Enter position to delete (1-based): ");
-    scanf("%d", &pos);
+    scanf("%d", &key);
 
-    // Convert to 0-based index
-    pos = pos - 1;
+    head = deleteFirstOccurrence(head, key);
 
-    // Shift elements to the left
-    for (int i = pos; i < n - 1; i++) {
-        arr[i] = arr[i + 1];
-    }
-
-    printf("Array after deletion:\n");
-    for (int i = 0; i < n - 1; i++) {
-        printf("%d ", arr[i]);
+    // Print updated list
+    temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
     }
 
     return 0;
