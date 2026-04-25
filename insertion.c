@@ -1,40 +1,32 @@
 #include <stdio.h>
 
-int main()
-{
-    int n, pos, x;
-    int arr[100];
-    int i;
-
-    printf("Enter number of elements: ");
+int main() {
+    int n;
     scanf("%d", &n);
 
-    printf("Enter %d elements:\n", n);
-    for (i = 0; i < n; i++)
-    {
+    int arr[n];
+    for(int i = 0; i < n; i++) {
         scanf("%d", &arr[i]);
     }
 
-    printf("Enter position (1-based): ");
-    scanf("%d", &pos);
+    // Insertion Sort
+    for(int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
 
-    printf("Enter element to insert: ");
-    scanf("%d", &x);
+        // Shift elements greater than key
+        while(j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
 
-    for (i = n; i >= pos; i--)
-    {
-        arr[i] = arr[i - 1];
+        arr[j + 1] = key;
     }
 
-    arr[pos - 1] = x;
-
-    printf("Updated array:\n");
-    for (i = 0; i <= n; i++)
-    {
+    // Print sorted array
+    for(int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
     }
 
-    printf("\n");
     return 0;
 }
-
